@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="ar" dir="rtl"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow,noarchive"><meta name="theme-color" content="#f7f2e8">
+<title>معاينة الخامات | منزل الراشد | سمت</title>
+<link rel="icon" href="../../../assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../gallery.css">
+<style>
+.proof{max-width:1310px;margin-inline:auto}.actions,.views{display:flex;gap:12px;align-items:center;flex-wrap:wrap}.views{margin-bottom:14px}.views button{min-width:100px;padding-inline:15px}.actions{justify-content:space-between;margin:6px 0 22px}.actions a{min-height:44px;display:inline-flex;align-items:center}.mast-inner a{font-size:.9rem}
+</style></head>
+<body><header class="mast"><div class="wrap mast-inner"><a href="/"><img src="../../../assets/logo-ink.svg" width="110" height="45" alt="سمت"></a><a href="../">معرض الإضاءة</a></div></header>
+<main class="wrap proof"><div class="intro"><h1>معاينة الخامات</h1><p>منزل الراشد</p></div>
+<div class="views"><div class="seg" role="group" aria-label="المشهد"><button data-view="02" aria-pressed="true">الجلسة العربية</button><button data-view="08" aria-pressed="false">الفناء والحوض</button></div></div>
+<figure><div id="frame" class="frame"><img id="newPhoto" width="1440" height="960" alt=""><img id="oldPhoto" class="reference" alt="">
+<span class="tag tag-a">الحالي</span><span class="tag tag-b">المقترح</span><i class="seam" aria-hidden="true"></i>
+<input class="wipe" id="split" type="range" min="0" max="100" value="50" dir="ltr" aria-label="موضع فاصل المقارنة"></div>
+<figcaption><span>اسحب الفاصل لمقارنة الخامات من نفس الزاوية.</span></figcaption>
+<div class="actions"><a id="newLink" href="02.webp" target="_blank" rel="noopener">فتح المقترح كاملًا</a><a id="oldLink" href="../images/02/daylight.webp" target="_blank" rel="noopener">فتح الحالي كاملًا</a></div></figure></main>
+<script>
+const buttons=[...document.querySelectorAll('[data-view]')],frame=document.querySelector('#frame'),split=document.querySelector('#split');
+const poses=new Map(buttons.map(button=>[button.dataset.view,button]));
+function show(key){
+  const chosen=poses.get(key);
+  for(const button of buttons)button.setAttribute('aria-pressed',String(button===chosen));
+  for(const [image,link,path,title] of [['newPhoto','newLink',key,'المقترح'],['oldPhoto','oldLink','../images/'+key+'/daylight','الحالي']]){
+    const photo=document.getElementById(image);
+    photo.alt=chosen.textContent+'، '+title;
+    photo.sizes='(max-width:780px) 94vw, min(92vw,1180px)';
+    photo.srcset=path+'-720.webp 720w, '+path+'.webp 1440w';
+    photo.src=path+'.webp';
+    document.getElementById(link).href=path+'.webp';
+  }
+  const url=new URL(location.href);url.searchParams.set('view',key);history.replaceState(null,'',url);
+}
+for(const button of buttons)button.addEventListener('click',()=>show(button.dataset.view));
+split.addEventListener('input',()=>frame.style.setProperty('--cut',split.value+'%'));
+const first=new URLSearchParams(location.search).get('view');show(poses.has(first)?first:'02');
+</script></body></html>
