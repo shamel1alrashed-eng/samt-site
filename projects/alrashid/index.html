@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f7f2e8">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <meta name="description" content="زوايا منزل الراشد نهارًا وليلًا واختيارات إنارة الصالة والفناء من سمت.">
+  <meta property="og:title" content="منزل الراشد | سمت">
+  <meta property="og:description" content="استعرض الصالة والفناء وقارن الإضاءات من الزاوية نفسها.">
+  <meta property="og:image" content="https://samtstudio.com/projects/alrashid/images/01/daylight.webp">
+  <title>منزل الراشد | سمت</title>
+  <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="../../assets/fonts/plex-ar-regular.woff" as="font" type="font/woff" crossorigin>
+  <link rel="stylesheet" href="gallery.css">
+  <script src="gallery.js" defer></script>
+</head>
+<body>
+  <header class="mast"><div class="wrap mast-inner">
+    <a href="/" aria-label="موقع سمت"><img src="../../assets/logo-ink.svg" width="111" height="45" alt="سمت"></a>
+    <button id="share" type="button">مشاركة المشهد</button>
+  </div></header>
+  <main class="wrap">
+    <div class="intro"><h1>منزل الراشد</h1><p>الصالة والفناء</p></div>
+    <section class="viewer" aria-label="معرض الإضاءة">
+      <figure class="visual">
+        <div class="frame" id="frame" aria-busy="true">
+          <img id="hero" width="1440" height="960" alt="" fetchpriority="high">
+          <img id="reference" class="reference" alt="" hidden>
+          <span id="labelA" class="tag tag-a" hidden></span><span id="labelB" class="tag tag-b" hidden></span>
+          <span id="seam" class="seam" hidden aria-hidden="true"></span>
+          <input id="reveal" class="wipe" type="range" min="0" max="100" value="50" dir="ltr" aria-label="موضع فاصل مقارنة الإضاءتين" hidden>
+        </div>
+        <figcaption><div><h2 id="shotName"></h2><span id="shotInfo"></span></div><a id="full" target="_blank" rel="noopener" hidden>فتح الصورة للتكبير</a></figcaption>
+        <p role="status" id="status"></p>
+      </figure>
+      <div class="panel">
+        <div class="field"><label for="camera">زاوية المشاهدة</label><select id="camera"></select></div>
+        <div class="field"><span id="timeLabel">وقت المشهد</span><div class="seg time" role="group" aria-labelledby="timeLabel">
+          <button type="button" id="day" aria-pressed="true"><span aria-hidden="true">☀</span> النهار</button>
+          <button type="button" id="night" aria-pressed="false"><span aria-hidden="true">☾</span> الليل</button>
+        </div></div>
+        <div class="field" id="presetField" hidden><label for="preset">الإضاءة الليلية</label><select id="preset"></select></div>
+        <div class="field"><span id="qualityLabel">جودة الصورة</span><div class="seg quality" role="group" aria-labelledby="qualityLabel">
+          <button type="button" data-quality="low" aria-pressed="false">منخفضة</button>
+          <button type="button" data-quality="medium" aria-pressed="true">متوسطة</button>
+          <button type="button" data-quality="high" aria-pressed="false">عالية</button>
+        </div><small id="resolution"></small></div>
+        <div class="comparison-controls"><label class="check"><input type="checkbox" id="compare"> مقارنة إضاءتين</label>
+          <div id="comparisonField" class="field" hidden><label for="referenceMode">الإضاءة على يسار الفاصل</label><select id="referenceMode"></select><small>اسحب الفاصل داخل الصورة للمقارنة.</small></div>
+        </div>
+        <details id="circuits" hidden><summary>الإنارة المشغّلة</summary><div id="circuitBody"></div></details>
+      </div>
+    </section>
+    <section class="angles" aria-labelledby="anglesTitle"><h2 id="anglesTitle">زوايا المنزل</h2><div class="strip" id="angles"></div></section>
+    <details id="realism" class="realism"><summary>مقارنة معالجة الخامات والماء</summary><div id="realismPairs"></div></details>
+    <noscript>يلزم تفعيل جافاسكربت للتنقل بين الإضاءات. <a href="images/01/daylight.webp">فتح منظر الصالة نهارًا</a></noscript>
+  </main>
+  <footer class="wrap"><span>سمت</span><a href="/">samtstudio.com</a></footer>
+  <dialog id="shareDialog"><form method="dialog"><p>رابط المشهد</p><input id="shareText" type="url" readonly dir="ltr" aria-label="رابط المشهد"><button>إغلاق</button></form></dialog>
+</body></html>

@@ -1,0 +1,84 @@
+@font-face{font-family:Plex;src:url(../../assets/fonts/plex-ar-regular.woff) format("woff");font-weight:400;font-display:swap}
+@font-face{font-family:Plex;src:url(../../assets/fonts/plex-ar-bold.woff) format("woff");font-weight:700;font-display:swap}
+:root{--paper:#f7f2e8;--ink:#24302b;--muted:#615c53;--gold:#805823;--rule:#cec7ba;--pale:#ede6da;--max:1580px;color-scheme:light}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 16px/1.6 Plex,Tahoma,Arial,sans-serif}
+.wrap{max-width:var(--max);padding-inline:clamp(16px,4.5vw,74px);margin-inline:auto}
+.mast{border-bottom:1px solid var(--rule)}
+.mast-inner,.intro,figcaption,footer,.seg,.check{display:flex;align-items:center}
+.mast-inner{justify-content:space-between;min-height:63px}
+.mast-inner img{display:block;width:110px;height:auto}
+button,select,input{font:inherit}
+button,select,.check,summary{cursor:pointer}
+a{color:inherit;text-underline-offset:.26em}
+button{color:var(--ink)}
+:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+#share,.seg button,dialog button{background:transparent;border:1px solid var(--rule);border-radius:3px;min-height:44px;padding:6px 14px}
+#share{font-size:.9rem}
+.intro{justify-content:space-between;align-items:baseline;gap:12px;padding-block:clamp(17px,2.6vw,40px) clamp(13px,1.7vw,26px)}
+h1,h2,p,figure{margin:0}
+h1{font-size:clamp(2rem,4.2vw,4.25rem);line-height:1.2}
+.intro p,.field small,#shotInfo,summary+div,footer{color:var(--muted)}
+.viewer{display:grid;grid-template-columns:minmax(0,1fr) minmax(238px,300px);gap:clamp(18px,2.7vw,44px);align-items:start}
+.visual,.panel,.field,.angles,.strip,.viewer{min-width:0}
+.frame{--cut:50%;position:relative;isolation:isolate;width:100%;background:#e5dccb;aspect-ratio:3/2;overflow:hidden}
+.frame img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
+.frame img:not([src]){visibility:hidden}
+.reference{clip-path:inset(0 calc(100% - var(--cut)) 0 0)}
+.seam{position:absolute;inset:0 auto 0 var(--cut);width:2px;background:white;box-shadow:0 0 5px #0008;pointer-events:none}
+.seam::after{content:'↔';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);border-radius:50%;width:34px;height:34px;text-align:center;font:22px/34px Arial;background:white;color:var(--ink)}
+.tag{position:absolute;bottom:.7rem;background:#19221ddc;color:white;font-size:.8rem;padding:2px .55rem;max-width:45%;border-radius:2px}
+.tag-a{left:.65rem}.tag-b{right:.65rem}
+.wipe{position:absolute;inset:0;opacity:0;width:100%;height:100%;margin:0;cursor:ew-resize;touch-action:pan-y pinch-zoom}
+.frame:focus-within{outline:3px solid var(--gold);outline-offset:1px}
+figcaption{justify-content:space-between;gap:12px;align-items:start;padding-block:9px}
+h2{font-size:clamp(1.05rem,1.8vw,1.6rem);line-height:1.4}
+figcaption a{font-size:.9rem;white-space:nowrap;min-height:44px;display:inline-flex;align-items:center}
+#shotInfo,#status{font-size:.9rem}
+#status:empty{display:none}
+.panel{border-top:2px solid var(--ink);padding-top:12px;display:grid;gap:16px}
+.field{display:grid;gap:5px}
+.field>label,.field>span{font-weight:700}
+select{appearance:none;width:100%;min-height:46px;padding:6px 12px 6px 30px;border:1px solid #948e80;border-radius:3px;background-color:#fffcf6;color:var(--ink);font-size:1rem;background-image:linear-gradient(45deg,transparent 49%,#4f594e 50%),linear-gradient(135deg,#4f594e 50%,transparent 51%);background-size:5px 5px;background-position:13px center,18px center;background-repeat:no-repeat}
+.seg{border:1px solid #aaa394;border-radius:3px;overflow:hidden}
+.seg button{position:relative;flex:1;border:0;border-radius:0;padding:5px 2px;min-width:0}
+.seg button+button{border-inline-start:1px solid var(--rule)}
+.seg button[aria-pressed=true]{background:var(--ink);color:white}
+.seg button:focus-visible{z-index:1;outline-offset:-3px}
+.seg button:disabled{color:#746e65;background:var(--pale);cursor:default}
+.seg span{display:inline-block;padding-inline-end:3px;font:20px/1 Arial;vertical-align:middle}
+.field small,.realism p{font-size:.875rem}
+.comparison-controls,details#circuits{border-top:1px solid var(--rule);padding-top:8px}
+.check{gap:9px;min-height:44px}.check input{width:19px;height:19px;accent-color:var(--ink)}
+summary{font-weight:700;min-height:44px;align-content:center}
+#circuitBody ul{list-style:none;padding:0;margin:0}
+#circuitBody li{display:flex;justify-content:space-between;gap:8px}
+.angles{margin-top:clamp(22px,3.3vw,52px);border-top:1px solid var(--rule);padding-top:15px}
+.strip{display:flex;gap:12px;overflow-x:auto;padding:9px 3px 12px;scroll-snap-type:x proximity;scrollbar-width:thin}
+.angle{flex:0 0 clamp(130px,14.3vw,210px);scroll-snap-align:start;background:none;padding:3px;border:1px solid transparent;text-align:start;border-radius:2px}
+.angle img{width:100%;display:block;aspect-ratio:3/2;object-fit:contain;background:var(--pale)}
+.angle span{display:block;padding:4px 2px;font-size:.875rem}
+.angle[aria-pressed=true]{border-color:var(--ink);background:var(--pale)}
+.realism{margin:22px 0 30px;border-block:1px solid var(--rule);padding:5px 0}
+#realismPairs{display:grid;grid-template-columns:1fr 1fr;gap:18px;padding-bottom:15px}
+#realismPairs h3{font-size:1rem;margin:0 0 6px}
+footer{border-top:1px solid var(--rule);justify-content:space-between;padding-block:14px;font-size:.875rem}
+footer a{text-decoration:none}
+dialog{background:var(--paper);color:var(--ink);border:1px solid var(--rule);width:min(420px,90vw)}
+dialog::backdrop{background:#18241dcc}dialog input{width:100%;padding:9px;margin-block:10px}
+@media(max-width:780px){
+  .wrap{padding-inline:16px}
+  .mast-inner{min-height:52px}.mast-inner img{width:95px}
+  #share{min-height:44px;border-color:transparent;text-decoration:underline;text-underline-offset:.25em}
+  .intro{padding-block:13px 10px}.intro p{font-size:.9rem}
+  .viewer{display:flex;flex-direction:column;gap:9px}.visual,.panel{width:100%}
+  .visual>.frame{width:calc(100% + 32px);margin-inline:-16px}
+  .panel{grid-template-columns:1fr 1fr;gap:12px;align-items:start;padding-top:10px}
+  .field select{min-width:0}
+  #presetField,.comparison-controls,details#circuits{grid-column:1/-1}
+  .panel>.field:has(.quality){grid-column:1/-1;grid-template-columns:minmax(80px,auto) minmax(0,1fr);align-items:center}
+  #resolution{grid-column:2}
+  #realismPairs{grid-template-columns:1fr}.angle{flex-basis:126px}
+}
+@media(max-width:360px){.panel{grid-template-columns:1fr}.panel>.field:has(.quality){grid-template-columns:1fr}#resolution{grid-column:1}figcaption{flex-wrap:wrap;gap:0}}
