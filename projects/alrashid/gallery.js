@@ -137,6 +137,9 @@ async function init() {
   let request = 0;
   const angleButtons = new Map();
   $('compare').checked = Boolean(query.get('ref') && row(camera, reference) && reference !== light);
+  if (query.has('split') && /^\d{1,3}$/.test(query.get('split'))) {
+    $('reveal').value = String(Math.min(100, Number(query.get('split'))));
+  }
   fillSelect($('camera'), data.cameras, value => groups[value] || value);
   fillSelect($('preset'), data.presets.filter(p => p.id !== dayId));
   fillSelect($('referenceMode'), data.presets);
@@ -146,7 +149,10 @@ async function init() {
     url.searchParams.set('camera', camera);
     url.searchParams.set('light', light);
     if (quality !== 'medium') url.searchParams.set('quality', quality);
-    if ($('compare').checked) url.searchParams.set('ref', reference);
+    if ($('compare').checked) {
+      url.searchParams.set('ref', reference);
+      if ($('reveal').value !== '50') url.searchParams.set('split', $('reveal').value);
+    }
     return url;
   }
 
@@ -262,6 +268,7 @@ async function init() {
     if (button && !button.disabled) { quality = button.dataset.quality; update(); }
   });
   $('reveal').addEventListener('input', () => setSeam($('frame'), $('reveal')));
+  $('reveal').addEventListener('change', () => history.replaceState(null, '', urlForSelection()));
   setSeam($('frame'), $('reveal'));
   $('share').addEventListener('click', async () => {
     const url = urlForSelection().href;
