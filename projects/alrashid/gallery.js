@@ -192,6 +192,10 @@ async function init() {
     $('full').hidden = true;
     $('status').replaceChildren();
     for (const id of ['reference', 'labelA', 'labelB', 'reveal', 'seam']) $(id).hidden = true;
+    if (!comparing) {
+      $('reference').removeAttribute('src');
+      $('reference').alt = '';
+    }
     // Labels and both images change together so rapid selection cannot compare unrelated frames.
     const pending = setTimeout(() => {
       if (request === serial) $('status').textContent = 'جارٍ تحميل المشهد…';
@@ -285,6 +289,36 @@ async function init() {
       $('shareText').select();
     }
   });
+  // Keep an already-open client review in sync while native renders arrive.
+  if (data.images.some(image => !image.high)) {
+    let busy = false;
+    const refresh = async () => {
+      if (document.hidden || busy) return;
+      busy = true;
+      try {
+        const fresh = await jsonFile('lighting.json');
+        let visibleChange = false;
+        for (const item of fresh.images) {
+          const prior = row(item.camera, item.preset);
+          if (!prior || prior.high !== item.high) {
+            images.set(item.camera + '/' + item.preset, item);
+            visibleChange ||= item.camera === camera && (item.preset === light || item.preset === reference);
+          }
+        }
+        if (visibleChange) await update();
+        if (fresh.images.length === cameras.size * presets.size && fresh.images.every(item => item.high)) {
+          clearInterval(timer);
+          document.removeEventListener('visibilitychange', refresh);
+        }
+      } catch {
+        // A transient connection failure must not interrupt the selected photograph.
+      } finally {
+        busy = false;
+      }
+    };
+    const timer = setInterval(refresh, 120000);
+    document.addEventListener('visibilitychange', refresh);
+  }
   prepareRealism();
   await update();
 }
