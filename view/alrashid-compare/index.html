@@ -1,6 +1,33 @@
 <!doctype html>
-<html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="robots" content="noindex">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>منزل الراشد | سمت</title><link rel="canonical" href="https://samtstudio.com/projects/alrashid/#standalone-03">
-<script>location.replace("/projects/alrashid/#standalone-03")</script><meta http-equiv="refresh" content="0;url=/projects/alrashid/#standalone-03">
-</head><body><a href="/projects/alrashid/#standalone-03">فتح صورة منزل الراشد</a></body></html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#f7f2e8"><meta name="robots" content="noindex,nofollow,noarchive">
+  <title>مقارنة الإضاءات الليلية | نزل الحمدانية | سمت</title>
+  <meta name="description" content="قارن خيارات الإضاءة الليلية من الزاوية نفسها في نزل الحمدانية.">
+  <link rel="canonical" href="https://samtstudio.com/view/alrashid-compare/">
+  <link rel="icon" href="/assets/favicon.svg"><link rel="stylesheet" href="night.css?v=1">
+  <script defer src="night.js?v=1"></script>
+</head>
+<body><main>
+  <header><span>نزل الحمدانية</span><img src="/assets/logo-ink.svg" alt="سمت" width="102" height="42"></header>
+  <h1>مقارنة الإضاءات الليلية</h1>
+  <p class="intro">اختر زاوية وإضاءتين، ثم اسحب الفاصل لتشاهد الفرق بينهما.</p>
+  <div class="fields">
+    <label>زاوية المشاهدة<select id="camera" disabled></select></label>
+    <label>الإضاءة الأولى<select id="first" disabled></select></label>
+    <label>الإضاءة الثانية<select id="second" disabled></select></label>
+  </div>
+  <figure aria-label="مقارنة إضاءتين من الزاوية نفسها">
+    <div class="stage" id="stage" aria-busy="true">
+      <div id="photos"></div>
+      <div id="overlay" hidden>
+        <span class="badge right" id="rlabel"></span><span class="badge left" id="llabel"></span>
+        <div class="line" aria-hidden="true"><span>‹ &nbsp; ›</span></div>
+        <input id="split" type="range" min="0" max="100" value="50" dir="ltr" aria-label="موضع الفاصل بين الإضاءتين">
+      </div>
+    </div>
+    <figcaption><span id="status" role="status" aria-live="polite">جارٍ تحميل المعاينة…</span></figcaption>
+  </figure>
+  <noscript>فعّل جافاسكربت لعرض الصور ومقارنة خيارات الإضاءة.</noscript>
+</main></body></html>
