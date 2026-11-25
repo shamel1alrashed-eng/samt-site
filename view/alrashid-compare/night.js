@@ -16,7 +16,7 @@ function readLocation() {
   camera.value = [...camera.options].some(o => o.value === view) ? view : '02';
   selectPreset(first, query.get('a') || query.get('light'), 'majlis_normal');
   selectPreset(second, query.get('b') || query.get('ref') || query.get('reference'), first.value === 'all_on' ? 'majlis_normal' : 'all_on');
-  compare.checked = query.get('compare') !== '0';
+  compare.checked = query.get('compare') === '1';
 }
 
 function loadImage(row, side) {
@@ -45,7 +45,7 @@ async function display(updateUrl) {
   if (updateUrl) {
     const url = new URL(location.href);
     url.search = new URLSearchParams({camera:cam, a, b});
-    if (!dual) url.searchParams.set('compare','0');
+    if (dual) url.searchParams.set('compare','1');
     history.replaceState(null, '', url);
   }
   stage.setAttribute('aria-busy','true');
@@ -92,6 +92,7 @@ async function start() {
     select.disabled = false; select.addEventListener('change',() => display(true));
   }
   compare.addEventListener('change',() => display(true));
+  compare.disabled = false;
   split.addEventListener('input',() => stage.style.setProperty('--split',split.value+'%'));
   window.addEventListener('popstate',() => { readLocation(); display(false); });
   await display(false);

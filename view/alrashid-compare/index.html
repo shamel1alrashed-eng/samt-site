@@ -7,19 +7,19 @@
   <meta name="description" content="قارن خيارات الإضاءة الليلية من الزاوية نفسها في نزل الحمدانية.">
   <link rel="canonical" href="https://samtstudio.com/view/alrashid-compare/">
   <link rel="icon" href="/assets/favicon.svg"><link rel="stylesheet" href="night.css?v=2">
-  <script defer src="night.js?v=2"></script>
+  <script defer src="night.js?v=3"></script>
 </head>
 <body><main>
   <header><span>نزل الحمدانية</span><img src="/assets/logo-ink.svg" alt="سمت" width="102" height="42"></header>
-  <h1>مقارنة الإضاءات الليلية</h1>
+  <h1>معاينة الإضاءات الليلية</h1>
   <div class="mode-row">
-    <p class="intro" id="instruction">اختر زاوية وإضاءتين، ثم اسحب الفاصل لتشاهد الفرق بينهما.</p>
-    <label class="mode-switch"><input id="compare" type="checkbox" role="switch" checked aria-controls="second-field overlay"><span class="switch-track" aria-hidden="true"></span>تفعيل المقارنة</label>
+    <p class="intro" id="instruction">اختر زاوية وإضاءة لعرض المشهد كاملًا.</p>
+    <label class="mode-switch"><input id="compare" type="checkbox" role="switch" disabled aria-controls="second-field overlay"><span class="switch-track" aria-hidden="true"></span>تفعيل المقارنة</label>
   </div>
-  <div class="fields" id="fields">
+  <div class="fields single" id="fields">
     <label>زاوية المشاهدة<select id="camera" disabled></select></label>
-    <label><span id="first-title">الإضاءة الأولى</span><select id="first" disabled></select></label>
-    <label id="second-field">الإضاءة الثانية<select id="second" disabled></select></label>
+    <label><span id="first-title">الإضاءة</span><select id="first" disabled></select></label>
+    <label id="second-field" hidden>الإضاءة الثانية<select id="second" disabled></select></label>
   </div>
   <figure aria-label="معاينة الإضاءة الليلية">
     <div class="stage" id="stage" aria-busy="true">
