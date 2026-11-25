@@ -2,12 +2,24 @@
 
 const $ = id => document.getElementById(id);
 const qualityTiers = {
-  medium: {field: 'path', width: 1440, height: 960},
-  '4k': {field: 'large', width: 3840, height: 2560}
+  medium: {width: 1440, height: 960},
+  '4k': {width: 3840, height: 2560}
 };
 const preferenceKey = 'alrashid.gallery.quality';
 function normalizeQuality(value) {
   return ['4k', 'high', '6k', 'large'].includes(String(value).toLowerCase()) ? '4k' : 'medium';
+}
+function generated4k(row) {
+  const high = row?.generated?.high;
+  return high?.kind === 'direct-generated' && high.camera === row.camera && high.preset === row.preset &&
+    high.width === 3840 && high.height === 2560 && typeof high.path === 'string' &&
+    /^[a-f0-9]{64}$/.test(high.sha256) && high.path.includes(high.sha256.slice(0, 16)) ? high : null;
+}
+function mediumImage(row) {
+  return row.generated?.medium || {path: row.path, ...qualityTiers.medium};
+}
+function mediaLabel(row, size) {
+  return size === '4k' || row.generated?.medium ? 'الصورة المولّدة' : 'الرندر الأصلي';
 }
 const arabic = new Intl.NumberFormat('ar-SA', {useGrouping: false});
 const percentage = new Intl.NumberFormat('ar-SA', {style: 'percent', maximumFractionDigits: 1});
@@ -156,7 +168,8 @@ async function init() {
     const url = new URL(location.pathname, location.origin);
     url.searchParams.set('camera', camera);
     url.searchParams.set('light', light);
-    url.searchParams.set('quality', quality);
+    const quality4k = document.querySelector('[data-quality="4k"]');
+    url.searchParams.set('quality', quality4k.disabled ? 'medium' : quality);
     if ($('compare').checked) {
       url.searchParams.set('ref', reference);
       if ($('reveal').value !== '50') url.searchParams.set('split', $('reveal').value);
@@ -174,10 +187,10 @@ async function init() {
         data.presets.find(p => p.id !== light && row(camera, p.id)).id;
     }
     const alternate = row(camera, reference);
-    const photoReady = Boolean(current.photo && (!comparing || alternate.photo));
-    const shownQuality = photoReady ? quality : 'medium';
+    const highReady = Boolean(generated4k(current) && (!comparing || generated4k(alternate)));
+    const shownQuality = highReady ? quality : 'medium';
     const tier = qualityTiers[shownQuality];
-    const variant = image => photoReady ? image.photo : image;
+    const variant = image => shownQuality === '4k' ? generated4k(image) : mediumImage(image);
     const isDay = light === dayId;
     $('camera').value = camera;
     $('day').disabled = !row(camera, dayId);
@@ -186,12 +199,12 @@ async function init() {
     $('presetField').hidden = isDay;
     $('preset').value = isDay ? lastNight : light;
     for (const button of document.querySelectorAll('[data-quality]')) {
-      button.disabled = button.dataset.quality === '4k' && !photoReady;
+      button.disabled = button.dataset.quality === '4k' && !highReady;
+      if (button.dataset.quality === '4k') button.title = highReady ? '٣٨٤٠ × ٢٥٦٠ بكسل' : 'لا تتوفر صورة مولّدة بدقة 4K لهذا الاختيار';
       button.setAttribute('aria-pressed', String(button.dataset.quality === shownQuality));
     }
-    const treatment = photoReady && current.photo.method === 'native-guided-offline' ? 'معالجة فوتوغرافية محلية للرندر' : 'معالجة فوتوغرافية بالتوليد';
     $('resolution').textContent = arabic.format(tier.width) + ' × ' + arabic.format(tier.height) + ' بكسل · ' +
-      (photoReady ? treatment : 'الرندر الأصلي') + (shownQuality !== quality ? ' · نسخة 4K قيد التجهيز' : '');
+      mediaLabel(current, shownQuality) + (!highReady ? ' · 4K غير متاحة لهذا الاختيار' : '');
     $('referenceMode').value = reference;
     for (const option of $('referenceMode').options) option.disabled = option.value === light || !row(camera, option.value);
     $('comparisonField').hidden = !comparing;
@@ -212,7 +225,7 @@ async function init() {
     }, 380);
     try {
       const [base, second] = await Promise.all([
-        loadImage(variant(current)[tier.field], tier), comparing ? loadImage(variant(alternate)[tier.field], tier) : null
+        loadImage(variant(current).path, tier), comparing ? loadImage(variant(alternate).path, tier) : null
       ]);
       if (serial !== request) return;
       const label = cameras.get(camera).label;
@@ -220,13 +233,15 @@ async function init() {
       $('hero').alt = label + '، ' + presets.get(light).label;
       $('shotName').textContent = label;
       $('shotInfo').textContent = (isDay ? '' : 'ليلًا · ') + presets.get(light).label;
-      $('full').href = base.src;
+      const original = shownQuality === 'medium' && current.generated?.original;
+      $('full').href = original ? original.path : base.src;
+      $('full').textContent = original ? 'فتح الأصل · ' + arabic.format(original.width) + ' × ' + arabic.format(original.height) : 'فتح الصورة للتكبير';
       $('full').hidden = false;
       if (second) {
         $('reference').src = second.src;
         $('reference').alt = label + '، ' + presets.get(reference).label;
-        $('labelA').textContent = presets.get(reference).label;
-        $('labelB').textContent = presets.get(light).label;
+        $('labelA').textContent = presets.get(reference).label + ' · ' + mediaLabel(alternate, shownQuality);
+        $('labelB').textContent = presets.get(light).label + ' · ' + mediaLabel(current, shownQuality);
         for (const id of ['reference', 'labelA', 'labelB', 'reveal', 'seam']) $(id).hidden = false;
       }
       $('status').replaceChildren();
@@ -261,7 +276,7 @@ async function init() {
     photo.width = 240;
     photo.height = 160;
     const cover = row(item.id, dayId) || row(item.id, 'evening');
-    photo.src = cover.small;
+    photo.src = cover.generated?.medium?.path || cover.small;
     const label = document.createElement('span');
     label.textContent = item.label;
     button.append(photo, label);
@@ -305,7 +320,7 @@ async function init() {
     }
   });
   // Keep an already-open client review in sync while native renders arrive.
-  if (data.images.some(image => !image.photo)) {
+  if (data.images.some(image => !generated4k(image))) {
     let busy = false;
     const refresh = async () => {
       if (document.hidden || busy) return;
@@ -315,13 +330,14 @@ async function init() {
         let visibleChange = false;
         for (const item of fresh.images) {
           const prior = row(item.camera, item.preset);
-          if (!prior || prior.photo?.large !== item.photo?.large) {
+          if (!prior || prior.generated?.high?.sha256 !== item.generated?.high?.sha256 ||
+              prior.generated?.medium?.sha256 !== item.generated?.medium?.sha256) {
             images.set(item.camera + '/' + item.preset, item);
             visibleChange ||= item.camera === camera && (item.preset === light || item.preset === reference);
           }
         }
         if (visibleChange) await update();
-        if (fresh.images.length === cameras.size * presets.size && fresh.images.every(item => item.photo)) {
+        if (fresh.images.length === cameras.size * presets.size && fresh.images.every(generated4k)) {
           clearInterval(timer);
           document.removeEventListener('visibilitychange', refresh);
         }
