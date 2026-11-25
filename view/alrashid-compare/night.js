@@ -1,6 +1,7 @@
 'use strict';
 const byId = id => document.getElementById(id);
 const camera = byId('camera'), first = byId('first'), second = byId('second');
+const compare = byId('compare');
 const stage = byId('stage'), photos = byId('photos'), split = byId('split'), statusText = byId('status');
 const labels = new Map(), images = new Map();
 let revision = 0;
@@ -15,6 +16,7 @@ function readLocation() {
   camera.value = [...camera.options].some(o => o.value === view) ? view : '02';
   selectPreset(first, query.get('a') || query.get('light'), 'majlis_normal');
   selectPreset(second, query.get('b') || query.get('ref') || query.get('reference'), first.value === 'all_on' ? 'majlis_normal' : 'all_on');
+  compare.checked = query.get('compare') !== '0';
 }
 
 function loadImage(row, side) {
@@ -30,22 +32,34 @@ function loadImage(row, side) {
 
 async function display(updateUrl) {
   const token = ++revision;
-  const cam = camera.value, a = first.value, b = second.value;
+  const cam = camera.value, a = first.value, b = second.value, dual = compare.checked;
+  byId('second-field').hidden = !dual;
+  second.disabled = !dual;
+  byId('fields').classList.toggle('single', !dual);
+  byId('first-title').textContent = dual ? 'الإضاءة الأولى' : 'الإضاءة';
+  byId('instruction').textContent = dual ? 'اختر زاوية وإضاءتين، ثم اسحب الفاصل لتشاهد الفرق بينهما.' : 'اختر زاوية وإضاءة لعرض المشهد كاملًا.';
+  if (!dual) {
+    byId('overlay').hidden = true;
+    photos.querySelector('.left-photo')?.remove();
+  }
   if (updateUrl) {
     const url = new URL(location.href);
     url.search = new URLSearchParams({camera:cam, a, b});
+    if (!dual) url.searchParams.set('compare','0');
     history.replaceState(null, '', url);
   }
   stage.setAttribute('aria-busy','true');
-  statusText.textContent = 'جارٍ تحميل المقارنة…';
+  statusText.textContent = dual ? 'جارٍ تحميل المقارنة…' : 'جارٍ تحميل الصورة…';
   try {
-    const pair = await Promise.all([loadImage(images.get(cam+'/'+a),'right-photo'),loadImage(images.get(cam+'/'+b),'left-photo')]);
+    const signals = [loadImage(images.get(cam+'/'+a),'right-photo')];
+    if (dual) signals.push(loadImage(images.get(cam+'/'+b),'left-photo'));
+    const pair = await Promise.all(signals);
     if (token !== revision) return;
     photos.replaceChildren(...pair);
     byId('rlabel').textContent = labels.get(a);
     byId('llabel').textContent = labels.get(b);
-    byId('overlay').hidden = false;
-    statusText.textContent = a === b ? 'اختر إضاءة مختلفة لمشاهدة الفرق.' : '';
+    byId('overlay').hidden = !dual;
+    statusText.textContent = dual && a === b ? 'اختر إضاءة مختلفة لمشاهدة الفرق.' : '';
   } catch {
     if (token !== revision) return;
     photos.replaceChildren();
@@ -77,6 +91,7 @@ async function start() {
   for (const select of [camera,first,second]) {
     select.disabled = false; select.addEventListener('change',() => display(true));
   }
+  compare.addEventListener('change',() => display(true));
   split.addEventListener('input',() => stage.style.setProperty('--split',split.value+'%'));
   window.addEventListener('popstate',() => { readLocation(); display(false); });
   await display(false);
