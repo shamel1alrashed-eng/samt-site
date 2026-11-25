@@ -1,60 +1,89 @@
 <!doctype html>
-<html lang="ar" dir="rtl">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#f7f2e8">
-  <meta name="robots" content="noindex,nofollow,noarchive">
-  <meta name="description" content="زوايا منزل الراشد نهارًا وليلًا واختيارات إنارة الصالة والفناء من سمت.">
-  <meta property="og:title" content="منزل الراشد | سمت">
-  <meta property="og:description" content="استعرض الصالة والفناء وقارن الإضاءات من الزاوية نفسها.">
-  <meta property="og:image" content="https://samtstudio.com/projects/alrashid/images/01/daylight.webp">
-  <title>منزل الراشد | سمت</title>
-  <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
-  <link rel="preload" href="../../assets/fonts/plex-ar-regular.woff" as="font" type="font/woff" crossorigin>
-  <link rel="stylesheet" href="gallery.css">
-  <script src="gallery.js?v=direct-generated-1" defer></script>
-</head>
-<body>
-  <header class="mast"><div class="wrap mast-inner">
-    <a href="/" aria-label="موقع سمت"><img src="../../assets/logo-ink.svg" width="111" height="45" alt="سمت"></a>
-    <button id="share" type="button">مشاركة المشهد</button>
-  </div></header>
-  <main class="wrap">
-    <div class="intro"><h1>منزل الراشد</h1><p>الصالة والفناء</p></div>
-    <section class="viewer" aria-label="معرض الإضاءة">
-      <figure class="visual">
-        <div class="frame" id="frame" aria-busy="true">
-          <img id="hero" width="1440" height="960" alt="" fetchpriority="high">
-          <img id="reference" class="reference" alt="" hidden>
-          <span id="labelA" class="tag tag-a" hidden></span><span id="labelB" class="tag tag-b" hidden></span>
-          <span id="seam" class="seam" hidden aria-hidden="true"></span>
-          <input id="reveal" class="wipe" type="range" min="0" max="100" value="50" dir="ltr" aria-label="موضع فاصل مقارنة الإضاءتين" hidden>
-        </div>
-        <figcaption><div><h2 id="shotName"></h2><span id="shotInfo"></span></div><a id="full" target="_blank" rel="noopener" hidden>فتح الصورة للتكبير</a></figcaption>
-        <p role="status" id="status"></p>
-      </figure>
-      <div class="panel">
-        <div class="field"><label for="camera">زاوية المشاهدة</label><select id="camera"></select></div>
-        <div class="field"><span id="timeLabel">وقت المشهد</span><div class="seg time" role="group" aria-labelledby="timeLabel">
-          <button type="button" id="day" aria-pressed="true"><span aria-hidden="true">☀</span> النهار</button>
-          <button type="button" id="night" aria-pressed="false"><span aria-hidden="true">☾</span> الليل</button>
-        </div></div>
-        <div class="field" id="presetField" hidden><label for="preset">الإضاءة الليلية</label><select id="preset"></select></div>
-        <div class="field"><span id="qualityLabel">جودة الصورة</span><div class="seg quality" role="group" aria-labelledby="qualityLabel">
-          <button type="button" data-quality="medium" aria-pressed="true" title="١٤٤٠ × ٩٦٠ بكسل">متوسطة</button>
-          <button type="button" data-quality="4k" aria-pressed="false" aria-describedby="resolution" disabled>عالية <bdi>4K</bdi></button>
-        </div><small id="resolution"></small></div>
-        <div class="comparison-controls"><label class="check"><input type="checkbox" id="compare"> مقارنة إضاءتين</label>
-          <div id="comparisonField" class="field" hidden><label for="referenceMode">الإضاءة على يسار الفاصل</label><select id="referenceMode"></select><small>اسحب الفاصل داخل الصورة للمقارنة.</small></div>
-        </div>
-        <details id="circuits" hidden><summary>الإنارة المشغّلة</summary><div id="circuitBody"></div></details>
-      </div>
-    </section>
-    <section class="angles" aria-labelledby="anglesTitle"><h2 id="anglesTitle">زوايا المنزل</h2><div class="strip" id="angles"></div></section>
-    <details id="realism" class="realism"><summary>مقارنة معالجة الخامات والماء</summary><div id="realismPairs"></div></details>
-    <noscript>يلزم تفعيل جافاسكربت للتنقل بين الإضاءات. <a href="images/01/daylight.webp">فتح منظر الصالة نهارًا</a></noscript>
-  </main>
-  <footer class="wrap"><span>سمت</span><a href="/">samtstudio.com</a></footer>
-  <dialog id="shareDialog"><form method="dialog"><p>رابط المشهد</p><input id="shareText" type="url" readonly dir="ltr" aria-label="رابط المشهد"><button>إغلاق</button></form></dialog>
-</body></html>
+<html lang="ar" dir="rtl"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f7f2e8"><meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="description" content="صور منزل الراشد من الداخل والفناء.">
+<meta property="og:title" content="منزل الراشد | سمت"><meta property="og:type" content="website">
+<meta property="og:image" content="https://samtstudio.com/projects/alrashid/generated/standalone/02/daylight-52f8b425f77913d1-1280.jpg">
+<link rel="icon" href="/assets/favicon.svg"><link rel="canonical" href="https://samtstudio.com/projects/alrashid/">
+<link rel="preload" href="/assets/fonts/plex-ar-regular.woff" as="font" type="font/woff" crossorigin>
+<link rel="stylesheet" href="gallery.css?v=photo-album-1"><script defer src="gallery.js?v=photo-album-1"></script>
+<title>منزل الراشد | سمت</title></head><body>
+<main><header><h1>منزل الراشد</h1><img src="/assets/logo-ink.svg" width="100" height="40" alt="سمت"></header>
+<figure id="standalone-02" class="lead">
+  <a href="/projects/alrashid/generated/standalone/02/daylight-43d0cb16fcee16d1-3840.webp" aria-label="فتح صورة الجلسة العربية بحجمها الكامل">
+    <img src="/projects/alrashid/generated/standalone/02/daylight-52f8b425f77913d1-1280.jpg" srcset="/projects/alrashid/generated/standalone/02/daylight-52f8b425f77913d1-1280.jpg 1280w, /projects/alrashid/generated/standalone/02/daylight-43d0cb16fcee16d1-3840.webp 3840w" sizes="(min-width: 1500px) 1404px, 94vw"
+      width="3840" height="2560" alt="الجلسة العربية" fetchpriority="high" decoding="async">
+  </a>
+  <figcaption>الجلسة العربية</figcaption>
+</figure>
+<div class="gallery"><figure id="standalone-03">
+  <a href="/projects/alrashid/generated/standalone/03/daylight-7684fa54ec7a54b6-3840.webp" aria-label="فتح صورة البوفيه والثريا بحجمها الكامل">
+    <img src="/projects/alrashid/generated/standalone/03/daylight-57a3eefbaa859d23-1440.webp" srcset="/projects/alrashid/generated/standalone/03/daylight-57a3eefbaa859d23-1440.webp 1440w, /projects/alrashid/generated/standalone/03/daylight-7684fa54ec7a54b6-3840.webp 3840w" sizes="(min-width: 1500px) 690px, (min-width: 850px) 46vw, 94vw"
+      width="3840" height="2560" alt="البوفيه والثريا" loading="lazy" decoding="async">
+  </a>
+  <figcaption>البوفيه والثريا</figcaption>
+</figure>
+<figure id="gallery-02">
+  <a href="/projects/alrashid/generated/gallery/02/daylight-35ed616bdce1898e-3840.webp" aria-label="فتح صورة الجلسة العربية وسقف الشبك بحجمها الكامل">
+    <img src="/projects/alrashid/generated/gallery/02/daylight-5abafc134567534b-1440.webp" srcset="/projects/alrashid/generated/gallery/02/daylight-5abafc134567534b-1440.webp 1440w, /projects/alrashid/generated/gallery/02/daylight-35ed616bdce1898e-3840.webp 3840w" sizes="(min-width: 1500px) 690px, (min-width: 850px) 46vw, 94vw"
+      width="3840" height="2560" alt="الجلسة العربية وسقف الشبك" loading="lazy" decoding="async">
+  </a>
+  <figcaption>الجلسة العربية وسقف الشبك</figcaption>
+</figure>
+<figure id="gallery-06">
+  <a href="/projects/alrashid/generated/gallery/06/daylight-94f2441a9f7007bc-1536.png" aria-label="فتح صورة واجهة الصالة من الحديقة بحجمها الكامل">
+    <img src="/projects/alrashid/generated/gallery/06/daylight-5ca5f798fac7d53f-1440.webp" srcset="/projects/alrashid/generated/gallery/06/daylight-5ca5f798fac7d53f-1440.webp 1440w, /projects/alrashid/generated/gallery/06/daylight-94f2441a9f7007bc-1536.png 1536w" sizes="(min-width: 1500px) 690px, (min-width: 850px) 46vw, 94vw"
+      width="1536" height="1024" alt="واجهة الصالة من الحديقة" loading="lazy" decoding="async">
+  </a>
+  <figcaption>واجهة الصالة من الحديقة</figcaption>
+</figure>
+<figure id="gallery-01">
+  <a href="/projects/alrashid/generated/gallery/01/daylight-a9cb3838ae5240cb-1536.png" aria-label="فتح صورة الصالة من المدخل بحجمها الكامل">
+    <img src="/projects/alrashid/generated/gallery/01/daylight-409a0dec99c158f1-1440.webp" srcset="/projects/alrashid/generated/gallery/01/daylight-409a0dec99c158f1-1440.webp 1440w, /projects/alrashid/generated/gallery/01/daylight-a9cb3838ae5240cb-1536.png 1536w" sizes="(min-width: 1500px) 690px, (min-width: 850px) 46vw, 94vw"
+      width="1536" height="1024" alt="الصالة من المدخل" loading="lazy" decoding="async">
+  </a>
+  <figcaption>الصالة من المدخل</figcaption>
+</figure>
+<figure id="gallery-03">
+  <a href="/projects/alrashid/generated/gallery/03/daylight-ee47c4ca0835b77d-1536.png" aria-label="فتح صورة البوفيه والثريا من جهة الزجاج بحجمها الكامل">
+    <img src="/projects/alrashid/generated/gallery/03/daylight-7144dade7d338731-1440.webp" srcset="/projects/alrashid/generated/gallery/03/daylight-7144dade7d338731-1440.webp 1440w, /projects/alrashid/generated/gallery/03/daylight-ee47c4ca0835b77d-1536.png 1536w" sizes="(min-width: 1500px) 690px, (min-width: 850px) 46vw, 94vw"
+      width="1536" height="1024" alt="البوفيه والثريا من جهة الزجاج" loading="lazy" decoding="async">
+  </a>
+  <figcaption>البوفيه والثريا من جهة الزجاج</figcaption>
+</figure>
+<figure id="gallery-04">
+  <a href="/projects/alrashid/generated/gallery/04/daylight-0e846e43990d3332-1536.png" aria-label="فتح صورة الأريكة وقوسا الفناء بحجمها الكامل">
+    <img src="/projects/alrashid/generated/gallery/04/daylight-ce662e3d6992dfc2-1440.webp" srcset="/projects/alrashid/generated/gallery/04/daylight-ce662e3d6992dfc2-1440.webp 1440w, /projects/alrashid/generated/gallery/04/daylight-0e846e43990d3332-1536.png 1536w" sizes="(min-width: 1500px) 690px, (min-width: 850px) 46vw, 94vw"
+      width="1536" height="1024" alt="الأريكة وقوسا الفناء" loading="lazy" decoding="async">
+  </a>
+  <figcaption>الأريكة وقوسا الفناء</figcaption>
+</figure>
+<figure id="gallery-05">
+  <a href="/projects/alrashid/generated/gallery/05/daylight-22bb7bdae58763c8-1536.png" aria-label="فتح صورة طاولات المجلس من جهة الفناء بحجمها الكامل">
+    <img src="/projects/alrashid/generated/gallery/05/daylight-3c0777575c1b4329-1440.webp" srcset="/projects/alrashid/generated/gallery/05/daylight-3c0777575c1b4329-1440.webp 1440w, /projects/alrashid/generated/gallery/05/daylight-22bb7bdae58763c8-1536.png 1536w" sizes="(min-width: 1500px) 690px, (min-width: 850px) 46vw, 94vw"
+      width="1536" height="1024" alt="طاولات المجلس من جهة الفناء" loading="lazy" decoding="async">
+  </a>
+  <figcaption>طاولات المجلس من جهة الفناء</figcaption>
+</figure>
+<figure id="gallery-07">
+  <a href="/projects/alrashid/generated/gallery/07/daylight-95e71cb1540d0f53-1536.png" aria-label="فتح صورة المائدة والحديقة من عتبة الصالة بحجمها الكامل">
+    <img src="/projects/alrashid/generated/gallery/07/daylight-0e8b78a74c7021c8-1440.webp" srcset="/projects/alrashid/generated/gallery/07/daylight-0e8b78a74c7021c8-1440.webp 1440w, /projects/alrashid/generated/gallery/07/daylight-95e71cb1540d0f53-1536.png 1536w" sizes="(min-width: 1500px) 690px, (min-width: 850px) 46vw, 94vw"
+      width="1536" height="1024" alt="المائدة والحديقة من عتبة الصالة" loading="lazy" decoding="async">
+  </a>
+  <figcaption>المائدة والحديقة من عتبة الصالة</figcaption>
+</figure>
+<figure id="gallery-08">
+  <a href="/projects/alrashid/generated/gallery/08/daylight-a1b0cbaec2973952-1536.png" aria-label="فتح صورة الحوض والقوس الجانبي بحجمها الكامل">
+    <img src="/projects/alrashid/generated/gallery/08/daylight-e4738e377c7eae24-1440.webp" srcset="/projects/alrashid/generated/gallery/08/daylight-e4738e377c7eae24-1440.webp 1440w, /projects/alrashid/generated/gallery/08/daylight-a1b0cbaec2973952-1536.png 1536w" sizes="(min-width: 1500px) 690px, (min-width: 850px) 46vw, 94vw"
+      width="1536" height="1024" alt="الحوض والقوس الجانبي" loading="lazy" decoding="async">
+  </a>
+  <figcaption>الحوض والقوس الجانبي</figcaption>
+</figure>
+<figure id="gallery-09">
+  <a href="/projects/alrashid/generated/gallery/09/daylight-27cbfa9c88684494-1536.png" aria-label="فتح صورة المائدة والجدار المزروع بحجمها الكامل">
+    <img src="/projects/alrashid/generated/gallery/09/daylight-72580176dae7ac55-1440.webp" srcset="/projects/alrashid/generated/gallery/09/daylight-72580176dae7ac55-1440.webp 1440w, /projects/alrashid/generated/gallery/09/daylight-27cbfa9c88684494-1536.png 1536w" sizes="(min-width: 1500px) 690px, (min-width: 850px) 46vw, 94vw"
+      width="1536" height="1024" alt="المائدة والجدار المزروع" loading="lazy" decoding="async">
+  </a>
+  <figcaption>المائدة والجدار المزروع</figcaption>
+</figure></div></main></body></html>
