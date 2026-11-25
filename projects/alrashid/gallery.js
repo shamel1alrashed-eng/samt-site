@@ -184,7 +184,7 @@ async function init() {
       button.disabled = (button.dataset.quality === 'high' && !highReady) || (button.dataset.quality === '4k' && !photoReady);
       button.setAttribute('aria-pressed', String(button.dataset.quality === quality));
     }
-    const treatment = usingPhoto && current.photo.method === 'generated' ? 'معالجة فوتوغرافية توليدية' : 'معالجة فوتوغرافية';
+    const treatment = usingPhoto && current.photo.method === 'native-guided-offline' ? 'معالجة فوتوغرافية محلية للرندر' : 'معالجة فوتوغرافية بالتوليد';
     $('resolution').textContent = arabic.format(tier.width) + ' × ' + arabic.format(tier.height) + ' بكسل · ' +
       (usingPhoto ? treatment : 'الرندر الأصلي');
     $('referenceMode').value = reference;
