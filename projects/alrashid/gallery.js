@@ -2,11 +2,13 @@
 
 const $ = id => document.getElementById(id);
 const qualityTiers = {
-  low: {field: 'small', width: 720, height: 480},
   medium: {field: 'path', width: 1440, height: 960},
-  '4k': {field: 'large', width: 3840, height: 2560},
-  high: {field: 'high', width: 6000, height: 4000}
+  '4k': {field: 'large', width: 3840, height: 2560}
 };
+const preferenceKey = 'alrashid.gallery.quality';
+function normalizeQuality(value) {
+  return ['4k', 'high', '6k', 'large'].includes(String(value).toLowerCase()) ? '4k' : 'medium';
+}
 const arabic = new Intl.NumberFormat('ar-SA', {useGrouping: false});
 const percentage = new Intl.NumberFormat('ar-SA', {style: 'percent', maximumFractionDigits: 1});
 const dayId = 'daylight';
@@ -134,7 +136,12 @@ async function init() {
   let light = row(camera, query.get('light')) ? query.get('light') : row(camera, dayId) ? dayId : data.default_preset;
   let lastNight = light === dayId ? 'evening' : light;
   let reference = query.get('ref') || (light === dayId ? lastNight : dayId);
-  let quality = Object.hasOwn(qualityTiers, query.get('quality')) ? query.get('quality') : 'medium';
+  let savedQuality;
+  try { savedQuality = localStorage.getItem(preferenceKey); } catch {}
+  let quality = normalizeQuality(query.get('quality') || savedQuality);
+  if (savedQuality) {
+    try { localStorage.setItem(preferenceKey, normalizeQuality(savedQuality)); } catch {}
+  }
   let request = 0;
   const angleButtons = new Map();
   $('compare').checked = Boolean(query.get('ref') && row(camera, reference) && reference !== light);
@@ -149,7 +156,7 @@ async function init() {
     const url = new URL(location.pathname, location.origin);
     url.searchParams.set('camera', camera);
     url.searchParams.set('light', light);
-    if (quality !== 'medium') url.searchParams.set('quality', quality);
+    url.searchParams.set('quality', quality);
     if ($('compare').checked) {
       url.searchParams.set('ref', reference);
       if ($('reveal').value !== '50') url.searchParams.set('split', $('reveal').value);
@@ -168,11 +175,9 @@ async function init() {
     }
     const alternate = row(camera, reference);
     const photoReady = Boolean(current.photo && (!comparing || alternate.photo));
-    const highReady = Boolean(current.high && (!comparing || alternate.high));
-    if ((quality === '4k' && !photoReady) || (quality === 'high' && !highReady)) quality = 'medium';
-    const tier = qualityTiers[quality];
-    const usingPhoto = quality !== 'high' && photoReady;
-    const variant = image => usingPhoto ? image.photo : image;
+    const shownQuality = photoReady ? quality : 'medium';
+    const tier = qualityTiers[shownQuality];
+    const variant = image => photoReady ? image.photo : image;
     const isDay = light === dayId;
     $('camera').value = camera;
     $('day').disabled = !row(camera, dayId);
@@ -181,12 +186,12 @@ async function init() {
     $('presetField').hidden = isDay;
     $('preset').value = isDay ? lastNight : light;
     for (const button of document.querySelectorAll('[data-quality]')) {
-      button.disabled = (button.dataset.quality === 'high' && !highReady) || (button.dataset.quality === '4k' && !photoReady);
-      button.setAttribute('aria-pressed', String(button.dataset.quality === quality));
+      button.disabled = button.dataset.quality === '4k' && !photoReady;
+      button.setAttribute('aria-pressed', String(button.dataset.quality === shownQuality));
     }
-    const treatment = usingPhoto && current.photo.method === 'native-guided-offline' ? 'معالجة فوتوغرافية محلية للرندر' : 'معالجة فوتوغرافية بالتوليد';
+    const treatment = photoReady && current.photo.method === 'native-guided-offline' ? 'معالجة فوتوغرافية محلية للرندر' : 'معالجة فوتوغرافية بالتوليد';
     $('resolution').textContent = arabic.format(tier.width) + ' × ' + arabic.format(tier.height) + ' بكسل · ' +
-      (usingPhoto ? treatment : 'الرندر الأصلي');
+      (photoReady ? treatment : 'الرندر الأصلي') + (shownQuality !== quality ? ' · نسخة 4K قيد التجهيز' : '');
     $('referenceMode').value = reference;
     for (const option of $('referenceMode').options) option.disabled = option.value === light || !row(camera, option.value);
     $('comparisonField').hidden = !comparing;
@@ -256,7 +261,7 @@ async function init() {
     photo.width = 240;
     photo.height = 160;
     const cover = row(item.id, dayId) || row(item.id, 'evening');
-    photo.src = (cover.photo || cover).small;
+    photo.src = cover.small;
     const label = document.createElement('span');
     label.textContent = item.label;
     button.append(photo, label);
@@ -275,7 +280,11 @@ async function init() {
   $('compare').addEventListener('change', update);
   document.querySelector('.quality').addEventListener('click', event => {
     const button = event.target.closest('[data-quality]');
-    if (button && !button.disabled) { quality = button.dataset.quality; update(); }
+    if (button && !button.disabled) {
+      quality = normalizeQuality(button.dataset.quality);
+      try { localStorage.setItem(preferenceKey, quality); } catch {}
+      update();
+    }
   });
   $('reveal').addEventListener('input', () => setSeam($('frame'), $('reveal')));
   $('reveal').addEventListener('change', () => history.replaceState(null, '', urlForSelection()));
@@ -296,7 +305,7 @@ async function init() {
     }
   });
   // Keep an already-open client review in sync while native renders arrive.
-  if (data.images.some(image => !image.high || !image.photo)) {
+  if (data.images.some(image => !image.photo)) {
     let busy = false;
     const refresh = async () => {
       if (document.hidden || busy) return;
@@ -306,14 +315,13 @@ async function init() {
         let visibleChange = false;
         for (const item of fresh.images) {
           const prior = row(item.camera, item.preset);
-          if (!prior || prior.high !== item.high || prior.photo?.large !== item.photo?.large) {
+          if (!prior || prior.photo?.large !== item.photo?.large) {
             images.set(item.camera + '/' + item.preset, item);
-            if (item.preset === dayId && item.photo) angleButtons.get(item.camera).querySelector('img').src = item.photo.small;
             visibleChange ||= item.camera === camera && (item.preset === light || item.preset === reference);
           }
         }
         if (visibleChange) await update();
-        if (fresh.images.length === cameras.size * presets.size && fresh.images.every(item => item.high && item.photo)) {
+        if (fresh.images.length === cameras.size * presets.size && fresh.images.every(item => item.photo)) {
           clearInterval(timer);
           document.removeEventListener('visibilitychange', refresh);
         }
